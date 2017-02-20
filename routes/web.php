@@ -26,11 +26,13 @@ Route::get('now', function () {
 /**
  * MVC route
  */
+Route::get('welcome', 'WelcomeController@index');
+
 Route::get('/', 'HomeController@index');
 
 Route::get('home', 'HomeController@index');
 
-Route::get('welcome', 'WelcomeController@index');
+Route::get('article', 'HomeController@index');
 
 Route::get('article/{id}', 'ArticleController@show');
 

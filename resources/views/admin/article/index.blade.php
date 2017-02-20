@@ -18,6 +18,7 @@
                     @foreach ($articles as $article)
                         <hr>
                         <div class="article">
+                            <h4>{{ $article->title_body }}</h4>
                             <h4>{{ $article->title }}</h4>
                             <div class="content">
                                 <p>

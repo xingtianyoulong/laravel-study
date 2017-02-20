@@ -11,7 +11,7 @@ class ArticleController extends Controller
     // Index Action
     public function index()
     {
-        return view('admin/article/index')->withArticles(Article::all());
+        return view('admin/article/index')->withArticles(Article::latest()->createdAt()->get());// Article::all()
     }
     
     // Create Action
@@ -29,14 +29,29 @@ class ArticleController extends Controller
             'body' => 'required', // 必填
         ]);
 
+        /**
+         * Save Data
+         * 方法一
+         * 
         // 通过 Article Model 插入一条数据进 articles 表
         $article = new Article; // 初始化 Article 对象
         $article->title = $request->get('title'); // 将 POST 提交过了的 title 字段的值赋给 article 的 title 属性
         $article->body = $request->get('body'); // 同上
         $article->user_id = $request->user()->id; // 获取当前 Auth 系统中注册的用户，并将其 id 赋给 article 的 user_id 属性
+        $article->save();*/
 
+        /**
+         * Save Data
+         * 方法二
+         */
+        // Get Data
+        $data = $request->all();
+        
+        // Set User Id
+        $data['user_id'] = $request->user()->id;
+        
         // 将数据保存到数据库，通过判断保存结果，控制页面进行不同跳转
-        if ($article->save()) {
+        if (Article::create($data)) {
             return redirect('admin/article'); // 保存成功，跳转到 文章管理 页
         } else {
             // 保存失败，跳回来路页面，保留用户的输入，并给出提示
